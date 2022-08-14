@@ -115,7 +115,7 @@ fig.update_layout(
 )
 st.plotly_chart(fig, use_container_width=True)
 
-st.subheader('左のサイドバーから、表示するデータの性別が選択できます。')
+st.subheader('左のサイドバーから、データの性別が選択できます。')
 
 def make_heatmap(label, file_name, i, sex, prefacture):
     url = url_1 + file_name + '.csv'
