@@ -115,8 +115,9 @@ fig.update_layout(
 )
 st.plotly_chart(fig, use_container_width=True)
 
+st.subheader('左のサイドバーから、表示するデータの性別が選択できます。')
 
-def make_heatmap(label, file_name, i):
+def make_heatmap(label, file_name, i, sex, prefacture):
     url = url_1 + file_name + '.csv'
     df = pd.read_csv(url, index_col=0)
     df_a = df.iloc[0:, 20 * i:20 + 20 * i]
@@ -150,13 +151,13 @@ def make_heatmap(label, file_name, i):
 
     fig = px.imshow(df_a, aspect="auto", height=600)
     fig.update_layout(
-        title=label,
+        title=f'{prefacture}の{label} （{sex}）',
         xaxis_title="年代",
         yaxis_title="週",
     )
     st.plotly_chart(fig, use_container_width=True)
 
 
-make_heatmap('年代別新規陽性者数', 'newly_confirmed_cases_detail_weekly', i)
-make_heatmap('年代別重症者数', 'severe_cases_detail_weekly', i)
-make_heatmap('年代別死者数', 'deaths_detail_cumulative_weekly', i)
+make_heatmap('年代別新規陽性者数', 'newly_confirmed_cases_detail_weekly', i, sex, prefacture)
+make_heatmap('年代別重症者数', 'severe_cases_detail_weekly', i, sex, prefacture)
+make_heatmap('年代別死者数', 'deaths_detail_cumulative_weekly', i, sex, prefacture)
