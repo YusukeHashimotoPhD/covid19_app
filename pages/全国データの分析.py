@@ -3,12 +3,13 @@ import streamlit as st
 import plotly.express as px
 from sklearn.decomposition import PCA
 
-from datetime import datetime
+#from datetime import datetime
+import datetime
 
 st.set_page_config(layout="wide")
 
-st.title("covid-19のデータ分析")
-st.caption('厚生労働省が発表したデータをグラフ化しています。（https://covid19.mhlw.go.jp/extensions/public/index.html）')
+st.title("全国のデータ分析")
+st.caption('厚生労働省が発表したデータをグラフ化しています。　https://covid19.mhlw.go.jp/extensions/public/index.html')
 
 dict_data = {
     '新規感染者数': 'newly_confirmed_cases_daily',
@@ -48,20 +49,39 @@ if data_kind == '死亡者数':
 df.columns = list_prefacture
 df.index = pd.to_datetime(df.index)
 
-selected_day = st.slider(
-    "表示",
+# selected_day = st.slider(
+#     "日時の選択",
+#     min_value=df.index[0].to_pydatetime(),
+#     max_value=df.index[-1].to_pydatetime(),
+#     value=df.index[-1].to_pydatetime(),
+#     format="YY年MM月DD日",
+# )
+
+selected_day_1 = st.date_input(
+    "日時の選択",
     min_value=df.index[0].to_pydatetime(),
     max_value=df.index[-1].to_pydatetime(),
     value=df.index[-1].to_pydatetime(),
-    format="YY年MM月DD日",
 )
 
-data = df[df.index == selected_day]
+selected_datetime = datetime.datetime(selected_day_1.year, selected_day_1.month, selected_day_1.day)
+
+#st.write(selected_day, selected_day_1, selected_datetime)
+
+data = df[df.index == selected_datetime]
 fig = px.bar(data.T)
+fig.update_layout(
+    title='都道府県別 ' + data_kind,
+    yaxis_title=data_kind,
+    xaxis_title="都道府県",
+    showlegend=False,
+)
 st.plotly_chart(fig, use_container_width=True)
 
+st.subheader('下のスライダーで、分析する時系列データの範囲を選択できます。')
+
 start_time, finish_time = st.slider(
-    "分析範囲",
+    "",
     min_value=df.index[0].to_pydatetime(),
     max_value=df.index[-1].to_pydatetime(),
     #    value=datetime(2020, 1, 1, 9, 30),
@@ -77,19 +97,39 @@ else:
 df_a = df_a[df_a.index >= start_time]
 df_a = df_a[df_a.index <= finish_time]
 
+# 時系列データ
 list_data = df.columns
 fig = px.line(df_a, y=list_data)
+fig.update_xaxes(tickformat="%Y年%m月")
+fig.update_layout(
+    title='都道府県別 ' + data_kind + 'の時系列データ',
+    yaxis_title=data_kind,
+    xaxis_title="日時",
+)
+
 st.plotly_chart(fig, use_container_width=True)
 
+# 2次元データ
 fig = px.imshow(df_a.T, height=800)
+fig.update_xaxes(tickformat="%Y年%m月")
+fig.update_layout(
+#    title=data_kind,
+    xaxis_title="日時",
+    yaxis_title="都道府県名",
+)
 st.plotly_chart(fig, use_container_width=True)
 
+# 相関係数
 corr = df_a.corr()
 fig = px.imshow(corr, height=800)
+fig.update_layout(
+    title='都道府県別時系列データの相関係数',
+#    xaxis_title="第1主成分",
+#    yaxis_title="第2主成分",
+)
 st.plotly_chart(fig, use_container_width=True)
-# if __name__ == '__main__':
-#    print('PyCharm')
 
+# 主成分分析
 df_b = df_a.dropna(axis = 0)
 PCAa = PCA(n_components=2)
 X_pca = PCAa.fit_transform(df_b.T)
@@ -99,5 +139,10 @@ fig = px.scatter(
     text=list_prefacture,
     height = 800,
     width=800,
+)
+fig.update_layout(
+    title='都道府県別時系列データの主成分分析',
+    xaxis_title="第1主成分",
+    yaxis_title="第2主成分",
 )
 st.plotly_chart(fig, use_container_width=True)
