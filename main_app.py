@@ -9,5 +9,8 @@ https://covid19.mhlw.go.jp/extensions/public/index.html
 ここでは、データ科学の手法で公開されたデータを分析していきます。
 プログラミングはpythonで執筆し、コードはGitHub上に公開しています。
 https://github.com/YusukeHashimotoPhD/covid19_app
+
+免責事項
+本アプリによって生じた、いかなる問題に対しての責任を負いません。自己責任での利用をお願いいたします。
 '''
 st.write(text)
