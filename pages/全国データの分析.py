@@ -43,7 +43,7 @@ url = url_1 + dict_data[data_kind] + '.csv'
 df_t = pd.read_csv(url, index_col=0)
 df = df_t.iloc[:, 1:]
 
-st.write(url)
+st.write('データ: ' + url)
 
 if data_kind == '死亡者数':
     df = df.diff()

@@ -26,27 +26,32 @@ url_1 = 'https://covid19.mhlw.go.jp/public/opendata/'
 
 data_kind = list_data_kind[0]
 url = url_1 + dict_data[data_kind] + '.csv'
+st.write(f'データ: {data_kind} {url}')
 df_0 = pd.read_csv(url, index_col=0)
 df_0.columns = list_prefacture
 
 data_kind = list_data_kind[1]
 url = url_1 + dict_data[data_kind] + '.csv'
+st.write(f'データ: {data_kind} {url}')
 df_1 = pd.read_csv(url, index_col=0)
 df_1.columns = list_prefacture
 
 data_kind = list_data_kind[2]
 url = url_1 + dict_data[data_kind] + '.csv'
+st.write(f'データ: {data_kind} {url}')
 df_2 = pd.read_csv(url, index_col=0)
 df_2.columns = list_prefacture
 
 data_kind = list_data_kind[3]
 url = url_1 + dict_data[data_kind] + '.csv'
+st.write(f'データ: {data_kind} {url}')
 df_3A = pd.read_csv(url, index_col=0)
 df_3 = df_3A.diff()
 df_3.columns = list_prefacture
 
 data_kind = list_data_kind[4]
 url = url_1 + dict_data[data_kind] + '.csv'
+st.write(f'データ: {data_kind} {url}')
 df_4A = pd.read_csv(url, index_col=0)
 df_4 = df_4A[
     ['(ALL) Requiring inpatient care', '(Hokkaido) Requiring inpatient care', '(Aomori) Requiring inpatient care',
