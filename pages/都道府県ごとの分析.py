@@ -6,7 +6,8 @@ import plotly.graph_objects as go
 st.set_page_config(layout="wide")
 
 st.title("都道府県ごとのデータ分析")
-st.caption('厚生労働省が発表したデータをグラフ化しています\n https://covid19.mhlw.go.jp/extensions/public/index.html')
+st.caption('厚生労働省が発表したデータをグラフ化しています')
+st.caption('https://covid19.mhlw.go.jp/extensions/public/index.html')
 
 dict_data = {
     '新規感染者数': 'newly_confirmed_cases_daily',
