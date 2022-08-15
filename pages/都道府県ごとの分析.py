@@ -115,7 +115,7 @@ fig.update_layout(
 )
 st.plotly_chart(fig, use_container_width=True)
 
-st.subheader('左のサイドバーから、データの性別が選択できます。')
+st.write('左のサイドバーから、データの性別が選択できます。')
 
 def make_heatmap(label, file_name, i, sex, prefacture):
     url = url_1 + file_name + '.csv'
@@ -165,20 +165,20 @@ make_heatmap('年代別死者数', 'deaths_detail_cumulative_weekly', i, sex, pr
 st.write('データソース')
 data_kind = list_data_kind[0]
 url = url_1 + dict_data[data_kind] + '.csv'
-st.write(f'{data_kind}: {url}')
+st.caption(f'{data_kind}: {url}')
 
-data_kind = list_data_kind[0]
+data_kind = list_data_kind[1]
 url = url_1 + dict_data[data_kind] + '.csv'
-st.write(f'{data_kind}: {url}')
+st.caption(f'{data_kind}: {url}')
 
-data_kind = list_data_kind[0]
+data_kind = list_data_kind[2]
 url = url_1 + dict_data[data_kind] + '.csv'
-st.write(f'{data_kind}: {url}')
+st.caption(f'{data_kind}: {url}')
 
-data_kind = list_data_kind[0]
+data_kind = list_data_kind[3]
 url = url_1 + dict_data[data_kind] + '.csv'
-st.write(f'{data_kind}: {url}')
+st.caption(f'{data_kind}: {url}')
 
-data_kind = list_data_kind[0]
+data_kind = list_data_kind[4]
 url = url_1 + dict_data[data_kind] + '.csv'
-st.write(f'{data_kind}: {url}')
+st.caption(f'{data_kind}: {url}')
