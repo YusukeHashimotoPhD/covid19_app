@@ -11,6 +11,7 @@ https://covid19.mhlw.go.jp/extensions/public/index.html
 https://github.com/YusukeHashimotoPhD/covid19_app
 
 免責事項
+
 本アプリによって生じた、いかなる問題に対しての責任を負いません。自己責任での利用をお願いいたします。
 '''
 st.write(text)
