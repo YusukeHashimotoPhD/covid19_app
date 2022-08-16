@@ -121,6 +121,8 @@ st.write('左のサイドバーから、データの性別が選択できます�
 def make_heatmap(label, file_name, i, sex, prefacture):
     url = url_1 + file_name + '.csv'
     df = pd.read_csv(url, index_col=0)
+
+    # 都道府県のデータを抽出
     df_a = df.iloc[0:, 20 * i:20 + 20 * i]
     df_a.columns = df_a.iloc[0]
     df_b = df_a[1:]
@@ -128,9 +130,11 @@ def make_heatmap(label, file_name, i, sex, prefacture):
     df_b = df_b.fillna(0)
     df_b = df_b.astype(int)
     if label == '年代別死者数':
+        # 累積データから日毎のデータを抽出
         df_b = df_b.diff()
         df_b = df_b.dropna(axis=0)
 
+    # 男性と女性のデータを抽出
     df_man = df_b.iloc[:, 0:10]
     df_woman = df_b.iloc[:, 10:20]
 
@@ -138,6 +142,7 @@ def make_heatmap(label, file_name, i, sex, prefacture):
     df_man.columns = columns
     df_woman.columns = columns
 
+    # 合計データを計算
     df_total = df_man.copy()
     for i in range(df_man.shape[0]):
         for j in range(df_man.shape[1]):
