@@ -3,13 +3,22 @@ import streamlit as st
 import plotly.express as px
 from sklearn.decomposition import PCA
 
-#from datetime import datetime
 import datetime
+
+
+#@st.cache(allow_input_mutation=True)
+@st.cache(allow_output_mutation=True)
+def data_load(url):
+    df_t = pd.read_csv(url, index_col=0)
+    df = df_t.iloc[:, 1:]
+    return df
+
 
 st.set_page_config(layout="wide")
 
 st.title("全国のデータ分析")
-st.caption('厚生労働省が発表したデータをグラフ化しています。　https://covid19.mhlw.go.jp/extensions/public/index.html')
+st.caption('厚生労働省が発表したデータをグラフ化しています。')
+#https://covid19.mhlw.go.jp/extensions/public/index.html'
 
 dict_data = {
     '新規感染者数': 'newly_confirmed_cases_daily',
@@ -25,7 +34,6 @@ list_prefacture = ['北海道', '青森県', '岩手県', '宮城県', '秋田�
                    '徳島県', '香川県', '愛媛県', '高知県', '福岡県', '佐賀県', '長崎県', '熊本県', '大分県', '宮崎県', '鹿児島県', '沖縄県']
 
 with st.sidebar:
-
     data_kind = st.selectbox(
         'データの種類',
         list(dict_data.keys()),
@@ -38,12 +46,9 @@ with st.sidebar:
         index=1
     )
 
-url_1 = 'https://covid19.mhlw.go.jp/public/opendata/'
-url = url_1 + dict_data[data_kind] + '.csv'
-df_t = pd.read_csv(url, index_col=0)
-df = df_t.iloc[:, 1:]
-
+url = 'https://covid19.mhlw.go.jp/public/opendata/' + dict_data[data_kind] + '.csv'
 st.write('データ: ' + url)
+df = data_load(url)
 
 if data_kind == '死亡者数':
     df = df.diff()
@@ -68,14 +73,14 @@ selected_day_1 = st.date_input(
 
 selected_datetime = datetime.datetime(selected_day_1.year, selected_day_1.month, selected_day_1.day)
 
-#st.write(selected_day, selected_day_1, selected_datetime)
+# st.write(selected_day, selected_day_1, selected_datetime)
 
 data = df[df.index == selected_datetime]
-fig = px.bar(data.T)
+fig = px.bar(data.T, orientation='h', height = 800)
 fig.update_layout(
     title='都道府県別 ' + data_kind,
-    yaxis_title=data_kind,
-    xaxis_title="都道府県",
+    xaxis_title=data_kind,
+    yaxis_title="都道府県",
     showlegend=False,
 )
 st.plotly_chart(fig, use_container_width=True)
@@ -115,7 +120,7 @@ st.plotly_chart(fig, use_container_width=True)
 fig = px.imshow(df_a.T, height=800)
 fig.update_xaxes(tickformat="%Y年%m月")
 fig.update_layout(
-#    title=data_kind,
+    #    title=data_kind,
     xaxis_title="日時",
     yaxis_title="都道府県名",
 )
@@ -126,20 +131,20 @@ corr = df_a.corr()
 fig = px.imshow(corr, height=800)
 fig.update_layout(
     title='都道府県別時系列データの相関係数',
-#    xaxis_title="第1主成分",
-#    yaxis_title="第2主成分",
+    #    xaxis_title="第1主成分",
+    #    yaxis_title="第2主成分",
 )
 st.plotly_chart(fig, use_container_width=True)
 
 # 主成分分析
-df_b = df_a.dropna(axis = 0)
+df_b = df_a.dropna(axis=0)
 PCAa = PCA(n_components=2)
 X_pca = PCAa.fit_transform(df_b.T)
 fig = px.scatter(
     x=X_pca[:, 0],
     y=X_pca[:, 1],
     text=list_prefacture,
-    height = 800,
+    height=800,
     width=800,
 )
 fig.update_layout(
