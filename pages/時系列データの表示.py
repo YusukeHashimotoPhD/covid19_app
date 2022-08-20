@@ -5,9 +5,8 @@ import plotly.graph_objects as go
 
 st.set_page_config(layout="wide")
 
-st.title("都道府県ごとのデータ分析")
-st.caption('厚生労働省が発表したデータをグラフ化しています。')
-#st.caption('https://covid19.mhlw.go.jp/extensions/public/index.html')
+st.title("時系列データの表示")
+st.write('厚生労働省はさまざまなデータを公開しています。特に、新規感染者数、治療必要者数、重症患者数、そして死亡者数は重要ですが、それぞれ日毎だったり集計値だったりフォーマットが異なります。ここでは、日毎で比較できる新規感染者数と死亡者数、集計値で比較できる治療必要者数と重症者数を比較するプロットを表示します。')
 
 dict_data = {
     '新規感染者数': 'newly_confirmed_cases_daily',
@@ -76,18 +75,10 @@ with st.sidebar:
     prefacture = st.selectbox(
         '都道府県名',
         list_prefacture,
-        index=13
-    )
-
-    sex = st.selectbox(
-        '性別',
-        ['合計', '男性', '女性'],
         index=0
     )
 
 i = list_prefacture.index(prefacture)
-
-# st.write(prefacture)
 
 df_a = pd.DataFrame()
 df_a[list_data_kind[0]] = df_0[prefacture]
@@ -99,7 +90,7 @@ df_a.index = pd.to_datetime(df_a.index)
 fig = px.line(df_a[[list_data_kind[0], list_data_kind[3]]])
 fig.update_xaxes(tickformat="%Y年%m月")
 fig.update_layout(
-    title=f'{list_data_kind[0]}と{list_data_kind[3]}の時系列データ（日毎）',
+    title=f'{list_data_kind[0]}と{list_data_kind[3]}（日毎）',
     yaxis_title=f'{list_data_kind[0]}と{list_data_kind[3]}',
     xaxis_title="日時",
     #    showlegend=False,
@@ -109,82 +100,9 @@ st.plotly_chart(fig, use_container_width=True)
 fig = px.line(df_a[[list_data_kind[4], list_data_kind[2]]])
 fig.update_xaxes(tickformat="%Y年%m月")
 fig.update_layout(
-    title=f'{list_data_kind[4]}と{list_data_kind[2]}の時系列データ（集計）',
+    title=f'{list_data_kind[4]}と{list_data_kind[2]}（集計）',
     yaxis_title=f'{list_data_kind[2]}と{list_data_kind[4]}',
     xaxis_title="日時",
     #    showlegend=False,
 )
 st.plotly_chart(fig, use_container_width=True)
-
-st.write('左のサイドバーから、データの性別が選択できます。')
-
-def make_heatmap(label, file_name, i, sex, prefacture):
-    url = url_1 + file_name + '.csv'
-    df = pd.read_csv(url, index_col=0)
-
-    # 都道府県のデータを抽出
-    df_a = df.iloc[0:, 20 * i:20 + 20 * i]
-    df_a.columns = df_a.iloc[0]
-    df_b = df_a[1:]
-    df_b = df_b.replace('*', '0')
-    df_b = df_b.fillna(0)
-    df_b = df_b.astype(int)
-    if label == '年代別死者数':
-        # 累積データから日毎のデータを抽出
-        df_b = df_b.diff()
-        df_b = df_b.dropna(axis=0)
-
-    # 男性と女性のデータを抽出
-    df_man = df_b.iloc[:, 0:10]
-    df_woman = df_b.iloc[:, 10:20]
-
-    columns = ['10歳未満', '10代', '20代', '30代', '40代', '50代', '60代', '70代', '80代', '90歳以上']
-    df_man.columns = columns
-    df_woman.columns = columns
-
-    # 合計データを計算
-    df_total = df_man.copy()
-    for i in range(df_man.shape[0]):
-        for j in range(df_man.shape[1]):
-            df_total.iloc[i, j] = df_man.iloc[i, j] + df_woman.iloc[i, j]
-
-    if sex == '男性':
-        df_a = df_man
-    elif sex == '女性':
-        df_a = df_woman
-    else:
-        df_a = df_total
-
-    fig = px.imshow(df_a, aspect="auto", height=600)
-    fig.update_layout(
-        title=f'{prefacture}の{label} （{sex}）',
-        xaxis_title="年代",
-        yaxis_title="週",
-    )
-    st.plotly_chart(fig, use_container_width=True)
-
-
-make_heatmap('年代別新規陽性者数', 'newly_confirmed_cases_detail_weekly', i, sex, prefacture)
-make_heatmap('年代別重症者数', 'severe_cases_detail_weekly', i, sex, prefacture)
-make_heatmap('年代別死者数', 'deaths_detail_cumulative_weekly', i, sex, prefacture)
-
-st.write('データソース')
-data_kind = list_data_kind[0]
-url = url_1 + dict_data[data_kind] + '.csv'
-st.caption(f'{data_kind}: {url}')
-
-data_kind = list_data_kind[1]
-url = url_1 + dict_data[data_kind] + '.csv'
-st.caption(f'{data_kind}: {url}')
-
-data_kind = list_data_kind[2]
-url = url_1 + dict_data[data_kind] + '.csv'
-st.caption(f'{data_kind}: {url}')
-
-data_kind = list_data_kind[3]
-url = url_1 + dict_data[data_kind] + '.csv'
-st.caption(f'{data_kind}: {url}')
-
-data_kind = list_data_kind[4]
-url = url_1 + dict_data[data_kind] + '.csv'
-st.caption(f'{data_kind}: {url}')
