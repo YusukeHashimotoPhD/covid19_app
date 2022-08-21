@@ -24,8 +24,6 @@ def data_load(url):
 st.set_page_config(layout="wide")
 
 st.title("都道府県別日毎データの表示")
-st.caption('厚生労働省が発表したデータをグラフ化しています。')
-#https://covid19.mhlw.go.jp/extensions/public/index.html'
 
 dict_data = {
     '新規感染者数': 'newly_confirmed_cases_daily',
@@ -48,8 +46,10 @@ url = 'https://covid19.mhlw.go.jp/public/opendata/' + dict_data['死亡者数'] 
 df_deathA = data_load(url)
 df_death = df_deathA.diff()
 
+st.write('表示するデータの日付を選択してください。')
+
 selected_day = st.slider(
-    "日時の選択",
+    '',
     min_value=df_new.index[0].to_pydatetime(),
     max_value=df_new.index[-1].to_pydatetime(),
     value=df_new.index[-1].to_pydatetime(),

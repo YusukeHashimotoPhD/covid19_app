@@ -17,7 +17,7 @@ def data_load(url):
 st.set_page_config(layout="wide")
 
 st.title("期間抽出データの分析")
-st.caption('新型コロナウィルスは定期的に変異を繰り返しながら、流行と収束を繰り返しています。その周期は4ヶ月ほどで、各々の流行における重なりが少ないことが特徴です。このため特定期間のデータを抽出することで、それぞれの変異株の特徴を分析できると考えられます。このページは、そのためのデータを提供します。どうぞご活用ください。')
+st.write('新型コロナウィルスは定期的に変異を繰り返しながら、流行と収束を繰り返しています。その周期は4ヶ月ほどで、各々の流行における重なりが少ないことが特徴です。このため特定期間のデータを抽出することで、それぞれの変異株の特徴を分析できると考えられます。このページは、そのためのデータを提供します。どうぞご活用ください。')
 
 dict_data = {
     '新規感染者数': 'newly_confirmed_cases_daily',
@@ -46,7 +46,6 @@ with st.sidebar:
     )
 
 url = 'https://covid19.mhlw.go.jp/public/opendata/' + dict_data[data_kind] + '.csv'
-st.write('データ: ' + url)
 df = data_load(url)
 
 if data_kind == '死亡者数':
@@ -154,3 +153,5 @@ fig.update_layout(
     yaxis_title="第2主成分",
 )
 st.plotly_chart(fig, use_container_width=True)
+
+st.write('データ: ' + url)
