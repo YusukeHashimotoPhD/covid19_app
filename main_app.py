@@ -17,6 +17,8 @@ https://covid19.mhlw.go.jp/extensions/public/index.html
 　都道府県別データの分析\n
 　期間抽出データの分析\n
 　流行時期ごとのデータ分析\n
+　流行時期ごとの統計分析\n
+　流行時期ごとの変数関係分析\n
 　性別・年代ごとのデータ分析\n
 
 プログラミングはpythonで執筆し、コードはGitHub上に公開しています。\n
