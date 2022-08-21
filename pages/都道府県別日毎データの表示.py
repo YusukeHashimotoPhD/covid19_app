@@ -1,12 +1,10 @@
 import pandas as pd
 import streamlit as st
 import plotly.express as px
-from sklearn.decomposition import PCA
 
 import datetime
 
 
-#@st.cache(allow_input_mutation=True)
 @st.cache(allow_output_mutation=True)
 def data_load(url):
     df_t = pd.read_csv(url, index_col=0)
@@ -24,6 +22,7 @@ def data_load(url):
 st.set_page_config(layout="wide")
 
 st.title("都道府県別日毎データの表示")
+st.write('都道府県別の日毎データを比較します。下のスライダーを動かして、表示するデータの日付を選択してください。')
 
 dict_data = {
     '新規感染者数': 'newly_confirmed_cases_daily',
@@ -46,8 +45,6 @@ url = 'https://covid19.mhlw.go.jp/public/opendata/' + dict_data['死亡者数'] 
 df_deathA = data_load(url)
 df_death = df_deathA.diff()
 
-st.write('表示するデータの日付を選択してください。')
-
 selected_day = st.slider(
     '',
     min_value=df_new.index[0].to_pydatetime(),
@@ -58,18 +55,38 @@ selected_day = st.slider(
 
 selected_datetime = datetime.datetime(selected_day.year, selected_day.month, selected_day.day)
 
+
 def make_graph(df, selected_datetime, label):
     data = df[df.index == selected_datetime]
-    fig = px.bar(data.T, orientation='h', height = 800)
+    fig = px.bar(data.T, orientation='h', height=800)
     fig.update_layout(
-        title= label,
-        xaxis_title= label,
+        title=label,
+        xaxis_title=label,
         yaxis_title="都道府県",
         showlegend=False,
     )
     return fig
 
-col0, col1, col2, col3 = st.columns(4)
+
+# col0, col1, col2, col3 = st.columns(4)
+#
+# with col0:
+#     fig = make_graph(df_new_10, selected_datetime, '10万人あたりの新規感染者数')
+#     st.plotly_chart(fig, use_container_width=True)
+#
+# with col1:
+#     fig = make_graph(df_new, selected_datetime, '新規感染者数')
+#     st.plotly_chart(fig, use_container_width=True)
+#
+# with col2:
+#     fig = make_graph(df_severe, selected_datetime, '重症患者数')
+#     st.plotly_chart(fig, use_container_width=True)
+#
+# with col3:
+#     fig = make_graph(df_death, selected_datetime, '死亡者数')
+#     st.plotly_chart(fig, use_container_width=True)
+
+col0, col1 = st.columns(2)
 
 with col0:
     fig = make_graph(df_new_10, selected_datetime, '10万人あたりの新規感染者数')
@@ -79,11 +96,13 @@ with col1:
     fig = make_graph(df_new, selected_datetime, '新規感染者数')
     st.plotly_chart(fig, use_container_width=True)
 
-with col2:
+col0, col1 = st.columns(2)
+
+with col0:
     fig = make_graph(df_severe, selected_datetime, '重症患者数')
     st.plotly_chart(fig, use_container_width=True)
 
-with col3:
+with col1:
     fig = make_graph(df_death, selected_datetime, '死亡者数')
     st.plotly_chart(fig, use_container_width=True)
 

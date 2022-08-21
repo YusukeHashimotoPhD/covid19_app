@@ -1,14 +1,11 @@
 import pandas as pd
 import streamlit as st
 import plotly.express as px
-import plotly.graph_objects as go
 
 st.set_page_config(layout="wide")
 
 st.title("性別・年代ごとのデータ分析")
-st.write(
-    '　厚生労働省から、性別と年代別データが公表されています。このデータからは感染状況において性差はほとんどなく、年齢に強く依存することが示されます。具体的には、新規感染者は若者に集中し、重症者と死者は高齢者に集中しています。このような事実を注視しつつ、適切な感染対策を行うことが重要だと考えます。')
-# st.caption('https://covid19.mhlw.go.jp/extensions/public/index.html')
+st.write('厚生労働省は、性別と年代ごとのデータを公表しています。左のサイドバーから、データの都道府県と性別が選択できます。ただし、データを公表していない都道府県もあるので、ご了承ください。')
 
 dict_data = {
     '新規感染者数': 'newly_confirmed_cases_daily',
@@ -88,36 +85,6 @@ with st.sidebar:
 
 i = list_prefacture.index(prefacture)
 
-# df_a = pd.DataFrame()
-# df_a[list_data_kind[0]] = df_0[prefacture]
-# df_a[list_data_kind[3]] = df_3[prefacture]
-# df_a[list_data_kind[4]] = df_4[prefacture]
-# df_a[list_data_kind[2]] = df_2[prefacture]
-# df_a.index = pd.to_datetime(df_a.index)
-
-# fig = px.line(df_a[[list_data_kind[0], list_data_kind[3]]])
-# fig.update_xaxes(tickformat="%Y年%m月")
-# fig.update_layout(
-#     title=f'{list_data_kind[0]}と{list_data_kind[3]}の時系列データ（日毎）',
-#     yaxis_title=f'{list_data_kind[0]}と{list_data_kind[3]}',
-#     xaxis_title="日時",
-#     #    showlegend=False,
-# )
-# st.plotly_chart(fig, use_container_width=True)
-#
-# fig = px.line(df_a[[list_data_kind[4], list_data_kind[2]]])
-# fig.update_xaxes(tickformat="%Y年%m月")
-# fig.update_layout(
-#     title=f'{list_data_kind[4]}と{list_data_kind[2]}の時系列データ（集計）',
-#     yaxis_title=f'{list_data_kind[2]}と{list_data_kind[4]}',
-#     xaxis_title="日時",
-#     #    showlegend=False,
-# )
-# st.plotly_chart(fig, use_container_width=True)
-
-st.write('　左のサイドバーから、データの性別が選択できます。')
-
-
 def make_heatmap(label, file_name, i, sex, prefacture, url_1):
     url = url_1 + file_name + '.csv'
     df = pd.read_csv(url, index_col=0)
@@ -189,6 +156,7 @@ dict_data = {
 
 data_name = '年代別新規陽性者数'
 df_new = make_heatmap(data_name, dict_data[data_name], i, sex, prefacture, url_1)
+#年齢に強く依存することが示しています。具体的には、新規感染者は若者に集中し、重症者と死者は高齢者に集中しています。このような事実を注視しつつ、効率的かつ効果的な感染対策を行うことが重要だと考えられます。
 data_name = '年代別重症者数'
 df_severe = make_heatmap(data_name, dict_data[data_name], i, sex, prefacture, url_1)
 data_name = '年代別死者数'
@@ -196,12 +164,20 @@ df_death = make_heatmap(data_name, dict_data[data_name], i, sex, prefacture, url
 
 list_week = list(df_new.index) + ['合計']
 
-with st.sidebar:
-    selected_week = st.selectbox(
-        '週の選択',
-        list_week,
-        index=len(df_new)-1
-    )
+# with st.sidebar:
+#     selected_week = st.selectbox(
+#         '週',
+#         list_week,
+#         index=len(df_new)-1
+#     )
+
+st.subheader('週ごとの年代別データの比較')
+
+selected_week = st.selectbox(
+    '週',
+    list_week[::-1],
+    index=0
+)
 
 df_s = pd.DataFrame()
 if selected_week == '合計':
@@ -213,11 +189,19 @@ else:
     df_s['年代別重症者数'] = df_severe.loc[selected_week]
     df_s['年代別死者数'] = df_death.loc[selected_week].abs()
 
-st.subheader(selected_week + '　年代別データの比較')
+#st.subheader(selected_week + '　年代別データの比較')
 
-make_barplot(df_s, '年代別新規陽性者数')
-make_barplot(df_s, '年代別重症者数')
-make_barplot(df_s, '年代別死者数')
+
+col0, col1, col2 = st.columns(3)
+
+with col0:
+    make_barplot(df_s, '年代別新規陽性者数')
+with col1:
+    make_barplot(df_s, '年代別重症者数')
+with col2:
+    make_barplot(df_s, '年代別死者数')
+
+st.caption('新規感染者は若者に集中し、重症者と死者は高齢者に集中していることがわかります。')
 
 st.write('データソース')
 url = url_1 + dict_data['年代別新規陽性者数'] + '.csv'
