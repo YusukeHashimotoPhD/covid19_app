@@ -5,6 +5,6 @@ df = pd.DataFrame()
 
 st.write('start')
 
-df.to_csv('tempDir/test.csv')
+df.to_csv('./tempDir/test.csv')
 
 st.write('data is saved')
