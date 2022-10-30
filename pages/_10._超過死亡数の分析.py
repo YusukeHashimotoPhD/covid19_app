@@ -6,6 +6,7 @@ import numpy as np
 st.set_page_config(layout="wide")
 
 st.title("超過死亡数のデータ分析")
+st.write('データの出展：https://dashboard.e-stat.go.jp/timeSeriesResult?indicatorCode=0203020000000010000')
 
 folder_path = './'
 file_path = folder_path + 'TimeSeriesResult_20221030155227851.csv'
