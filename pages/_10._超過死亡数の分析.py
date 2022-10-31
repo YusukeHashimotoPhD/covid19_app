@@ -35,9 +35,6 @@ st.plotly_chart(fig, use_container_width=True)
 
 fig = px.line(df_A,
               title='月毎死亡数の年変化',
-#              x="月",
-#              y="死亡数【人】",
-#              color = '年'
               )
 fig.update_yaxes(title_text='死亡数')
 st.plotly_chart(fig, use_container_width=True)
@@ -46,4 +43,16 @@ fig = px.line(df_A.diff(),
               title='月毎死亡数の対前年変化',
               )
 fig.update_yaxes(title_text='対前年死亡数変化')
+st.plotly_chart(fig, use_container_width=True)
+
+fig = px.line(df_A.T,
+              title='月毎死亡数の年変化',
+              )
+fig.update_xaxes(title_text='死亡数')
+st.plotly_chart(fig, use_container_width=True)
+
+fig = px.line(df_A.diff().T,
+              title='月毎死亡数の対前年変化',
+              )
+fig.update_xaxes(title_text='対前年死亡数変化')
 st.plotly_chart(fig, use_container_width=True)
