@@ -4,6 +4,12 @@ import plotly.express as px
 import streamlit as st
 
 
+@st.cache(allow_output_mutation=True)
+def load_data():
+    file_path = 'https://exdeaths-japan.org/data/Observed.csv'
+    return pd.read_csv(file_path)
+
+
 def calc_days_from_new_year(date):
     ny = date.replace(month=1, day=1)
     return (date - ny).days
@@ -14,8 +20,7 @@ def calc_weeks_from_new_year(date):
     return (date - ny).days / 7
 
 
-file_path = 'https://exdeaths-japan.org/data/Observed.csv'
-df = pd.read_csv(file_path)
+df = load_data()
 
 df['date'] = pd.to_datetime(df['week_ending_date'], format='%d%b%Y')
 df = df.sort_values('date')
@@ -59,7 +64,8 @@ st.plotly_chart(fig, use_container_width=True)
 fig = px.scatter(dfD,
                  x='weeks_from_ny',
                  y='Observed',
-                 color='year',
+#                 size='year',
+                 color='prefectureJP',
                  hover_name='prefectureJP',
                  hover_data=['date']
                  )
