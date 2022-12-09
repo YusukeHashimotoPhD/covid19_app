@@ -20,6 +20,8 @@ def calc_weeks_from_new_year(date):
     return (date - ny).days / 7
 
 
+st.title('構築中')
+
 df = load_data()
 
 df['date'] = pd.to_datetime(df['week_ending_date'], format='%d%b%Y')
