@@ -61,14 +61,21 @@ fig = px.scatter(dfA,
                  y='Observed',
                  color='prefectureJP'
                  )
+fig.update_layout(
+    xaxis_title="年始からの日数",
+    yaxis_title="死亡数",
+)
 st.plotly_chart(fig, use_container_width=True)
 
 fig = px.scatter(dfD,
                  x='weeks_from_ny',
                  y='Observed',
-#                 size='year',
                  color='prefectureJP',
                  hover_name='prefectureJP',
                  hover_data=['date']
                  )
+fig.update_layout(
+    xaxis_title="年始からの週数",
+    yaxis_title="死亡数",
+)
 st.plotly_chart(fig, use_container_width=True)
