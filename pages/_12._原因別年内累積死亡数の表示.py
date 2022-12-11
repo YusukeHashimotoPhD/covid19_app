@@ -19,7 +19,7 @@ def calc_weeks_from_new_year(date):
     ny = date.replace(month=1, day=1)
     return int((date - ny).days / 7)
 
-st.title('原因別死亡数のデータ分析')
+st.title('原因別の年内累積死亡数')
 
 st.write('Data source: https://exdeaths-japan.org/#interpretation')
 
