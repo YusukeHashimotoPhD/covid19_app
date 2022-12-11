@@ -46,19 +46,34 @@ dfA = dfF[dfF['prefectureJP'] == '全国']
 dfB = dfA[['date', 'Observed']]
 dfB['date'] = pd.to_datetime(dfB['date'])
 dfB['year'] = dfB['date'].dt.year
-dfB['days_from_ny'] = dfB['date'].map(lambda x: calc_days_from_new_year(x))
+#dfB['days_from_ny'] = dfB['date'].map(lambda x: calc_days_from_new_year(x))
 dfB['weeks_from_ny'] = dfB['date'].map(lambda x: calc_weeks_from_new_year(x))
 dfB.index = dfB['date']
 dfB = dfB.rename(columns={'Observed': 'Observed_all'})
 dfG = pd.concat([dfB, dfC], axis=1)
 dfH = dfG.dropna()
 
-dfp = dfH.pivot(index='weeks_from_ny', columns='year', values='Observed_all')
-dfp = dfp.fillna(0)
-dfpc = dfp.cumsum()
+def plot_data(df, data_name, label_y):
+    dfp = df.pivot(index='weeks_from_ny', columns='year', values=data_name)
+    dfp = dfp.drop(2010, axis=1)
+    dfpc = dfp.cumsum()
+    fig = px.line(
+        dfpc,
+        title=label_y,
+    )
+    fig.update_layout(
+        xaxis_title="年初からの週数",
+        yaxis_title=label_y,
+    )
+    st.plotly_chart(fig, use_container_width=True)
 
-dfpc = dfpc.drop(2010, axis=1)
-fig = px.line(
-    dfpc
-)
-st.plotly_chart(fig, use_container_width=True)
+# list_data = ['Observed_Cancer', 'Observed_Circulatory', 'Observed_non-COVID-19', 'Observed_Respiratory',
+#              'Observed_Senility', 'Observed_Suicide']
+
+plot_data(dfH, 'Observed_all', '死亡総数')
+plot_data(dfH, 'Observed_non-COVID-19', 'covid-19以外による死亡数')
+plot_data(dfH, 'Observed_Circulatory', '循環器系による死亡数')
+plot_data(dfH, 'Observed_Respiratory', '呼吸器疾患による死亡数')
+plot_data(dfH, 'Observed_Cancer', 'がんによる死亡数')
+plot_data(dfH, 'Observed_Senility', '老衰による死亡数')
+plot_data(dfH, 'Observed_Suicide', '自殺による死亡数')
