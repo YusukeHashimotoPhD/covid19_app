@@ -73,10 +73,10 @@ def plot_data(df, data_name, label_y):
 # list_data = ['Observed_Cancer', 'Observed_Circulatory', 'Observed_non-COVID-19', 'Observed_Respiratory',
 #              'Observed_Senility', 'Observed_Suicide']
 
-plot_data(dfH, 'Observed_all', '死亡総数')
-plot_data(dfH, 'Observed_non-COVID-19', 'covid-19以外による死亡数')
-plot_data(dfH, 'Observed_Circulatory', '循環器系による死亡数')
-plot_data(dfH, 'Observed_Respiratory', '呼吸器疾患による死亡数')
-plot_data(dfH, 'Observed_Cancer', 'がんによる死亡数')
-plot_data(dfH, 'Observed_Senility', '老衰による死亡数')
-plot_data(dfH, 'Observed_Suicide', '自殺による死亡数')
+plot_data(dfH, 'Observed_all', '年内累積死亡数')
+plot_data(dfH, 'Observed_non-COVID-19', 'covid-19以外による年内累積死亡数')
+plot_data(dfH, 'Observed_Circulatory', '循環器系による年内累積死亡数')
+plot_data(dfH, 'Observed_Respiratory', '呼吸器疾患による年内累積死亡数')
+plot_data(dfH, 'Observed_Cancer', 'がんによる年内累積死亡数')
+plot_data(dfH, 'Observed_Senility', '老衰による年内累積死亡数')
+plot_data(dfH, 'Observed_Suicide', '自殺による年内累積死亡数')
