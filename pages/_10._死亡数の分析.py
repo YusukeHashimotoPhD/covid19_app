@@ -11,7 +11,7 @@ st.write('データの出展：https://dashboard.e-stat.go.jp/timeSeriesResult?i
 folder_path = './data/'
 file_path = folder_path + 'TimeSeriesResult_20221030155227851.csv'
 #file_path = folder_path + 'TimeSeriesResult_20221211115228753.csv'
-file_path = folder_path + 'TimeSeriesResult_20221211120728541.csv'
+file_path = folder_path + 'Observed/TimeSeriesResult_20221211120728541.csv'
 
 df = pd.read_csv(file_path)
 
