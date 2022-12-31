@@ -33,7 +33,7 @@ def plot_data(df, data_name, label_y):
     )
     st.plotly_chart(fig, use_container_width=True)
 
-st.title('原因別の年内累積死亡数')
+st.title('原因別週毎死亡数')
 
 st.write('Data source: https://exdeaths-japan.org/#interpretation')
 
