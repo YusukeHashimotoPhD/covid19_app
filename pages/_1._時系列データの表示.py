@@ -88,7 +88,7 @@ df_a[list_data_kind[2]] = df_2[prefacture]
 df_a.index = pd.to_datetime(df_a.index)
 
 fig = px.line(df_a[[list_data_kind[0], list_data_kind[3]]])
-fig.update_xaxes(tickformat="%Y年%m月")
+fig.update_xaxes(tickformat="%Y年%m月%d日")
 fig.update_layout(
     title=f'{list_data_kind[0]}と{list_data_kind[3]}（日毎）',
     yaxis_title=f'{list_data_kind[0]}と{list_data_kind[3]}',
