@@ -57,6 +57,7 @@ dfC.index = dfC['date']
 dfC = dfC.drop('date', axis=1)
 
 file_path = './data/Observed-2.csv'
+file_path = 'https://exdeaths-japan.org/data/Observed.csv'
 dfF = pd.read_csv(file_path)
 dfF['date'] = pd.to_datetime(dfF['week_ending_date'], format='%d%b%Y')
 dfA = dfF[dfF['prefectureJP'] == '全国']
