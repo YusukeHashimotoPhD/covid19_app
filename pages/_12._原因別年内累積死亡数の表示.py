@@ -19,6 +19,20 @@ def calc_weeks_from_new_year(date):
     ny = date.replace(month=1, day=1)
     return int((date - ny).days / 7)
 
+def plot_data(df, data_name, label_y):
+    dfp = df.pivot(index='weeks_from_ny', columns='year', values=data_name)
+    dfp = dfp.drop(2010, axis=1)
+    dfpc = dfp.cumsum()
+    fig = px.line(
+        dfp,
+        title=label_y,
+    )
+    fig.update_layout(
+        xaxis_title="年初からの週数",
+        yaxis_title=label_y,
+    )
+    st.plotly_chart(fig, use_container_width=True)
+
 st.title('原因別の年内累積死亡数')
 
 st.write('Data source: https://exdeaths-japan.org/#interpretation')
@@ -55,20 +69,6 @@ dfB.index = dfB['date']
 dfB = dfB.rename(columns={'Observed': 'Observed_all'})
 dfG = pd.concat([dfB, dfC], axis=1)
 dfH = dfG.dropna()
-
-def plot_data(df, data_name, label_y):
-    dfp = df.pivot(index='weeks_from_ny', columns='year', values=data_name)
-    dfp = dfp.drop(2010, axis=1)
-    dfpc = dfp.cumsum()
-    fig = px.line(
-        dfpc,
-        title=label_y,
-    )
-    fig.update_layout(
-        xaxis_title="年初からの週数",
-        yaxis_title=label_y,
-    )
-    st.plotly_chart(fig, use_container_width=True)
 
 # list_data = ['Observed_Cancer', 'Observed_Circulatory', 'Observed_non-COVID-19', 'Observed_Respiratory',
 #              'Observed_Senility', 'Observed_Suicide']
