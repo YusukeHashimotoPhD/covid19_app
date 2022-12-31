@@ -13,7 +13,6 @@ folder_path = './data/'
 file_path = folder_path + 'TimeSeriesResult_20221030155227851.csv'
 #file_path = folder_path + 'TimeSeriesResult_20221211115228753.csv'
 file_path = folder_path + 'TimeSeriesResult_20221211120728541.csv'
-st.write(os.listdir(folder_path))
 
 df = pd.read_csv(file_path)
 
