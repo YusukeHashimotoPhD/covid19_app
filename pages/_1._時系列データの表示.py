@@ -98,7 +98,7 @@ fig.update_layout(
 st.plotly_chart(fig, use_container_width=True)
 
 fig = px.line(df_a[[list_data_kind[4], list_data_kind[2]]])
-fig.update_xaxes(tickformat="%Y年%m月")
+fig.update_xaxes(tickformat="%Y年%m月%d日")
 fig.update_layout(
     title=f'{list_data_kind[4]}と{list_data_kind[2]}（集計）',
     yaxis_title=f'{list_data_kind[2]}と{list_data_kind[4]}',
