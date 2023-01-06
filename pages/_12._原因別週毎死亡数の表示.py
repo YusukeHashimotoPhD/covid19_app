@@ -22,7 +22,9 @@ def calc_weeks_from_new_year(date):
 def plot_data(df, data_name, label_y):
     dfp = df.pivot(index='weeks_from_ny', columns='year', values=data_name)
     dfp = dfp.drop(2010, axis=1)
-    dfpc = dfp.cumsum()
+    # dfp = dfp.T
+    # dfp = dfp - dfp.mean()
+    # dfp = dfp.T
     fig = px.line(
         dfp,
         title=label_y,
@@ -74,10 +76,10 @@ dfH = dfG.dropna()
 # list_data = ['Observed_Cancer', 'Observed_Circulatory', 'Observed_non-COVID-19', 'Observed_Respiratory',
 #              'Observed_Senility', 'Observed_Suicide']
 
-plot_data(dfH, 'Observed_all', '年内累積死亡数')
-plot_data(dfH, 'Observed_non-COVID-19', 'covid-19以外による年内累積死亡数')
-plot_data(dfH, 'Observed_Circulatory', '循環器系による年内累積死亡数')
-plot_data(dfH, 'Observed_Respiratory', '呼吸器疾患による年内累積死亡数')
-plot_data(dfH, 'Observed_Cancer', 'がんによる年内累積死亡数')
-plot_data(dfH, 'Observed_Senility', '老衰による年内累積死亡数')
-plot_data(dfH, 'Observed_Suicide', '自殺による年内累積死亡数')
+plot_data(dfH, 'Observed_all', '週毎の死亡数')
+plot_data(dfH, 'Observed_non-COVID-19', 'covid-19以外による週毎の死亡数')
+plot_data(dfH, 'Observed_Circulatory', '循環器系による週毎の死亡数')
+plot_data(dfH, 'Observed_Respiratory', '呼吸器疾患による週毎の死亡数')
+plot_data(dfH, 'Observed_Cancer', 'がんによる週毎の死亡数')
+plot_data(dfH, 'Observed_Senility', '老衰による週毎の死亡数')
+plot_data(dfH, 'Observed_Suicide', '自殺による週毎の死亡数')

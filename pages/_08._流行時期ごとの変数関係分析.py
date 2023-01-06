@@ -126,7 +126,7 @@ for 流行時期 in dict_finish_time.keys():
     mask = (df_b.index >= dict_start_time[流行時期]) & (df_b.index < dict_finish_time[流行時期])
     df_b.loc[mask, '流行時期'] = 流行時期
 
-st.subheader('新規感染者数と日毎死亡者数の比較')
+st.subheader('新規感染者数と死亡者数の比較')
 make_scattergraph(df_b, '新規感染者数', '死亡者数', logx, logy)
 
 st.subheader('治療必要者数と重症患者数の比較')

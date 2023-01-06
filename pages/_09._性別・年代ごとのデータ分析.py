@@ -5,7 +5,7 @@ import plotly.express as px
 st.set_page_config(layout="wide")
 
 st.title("性別・年代ごとのデータ分析")
-st.write('厚生労働省は、性別と年代ごとのデータを公表しています。左のサイドバーから、データの都道府県と性別が選択できます。ただし、データを公表していない都道府県もあるので、ご了承ください。')
+st.write('左のサイドバーからデータの都道府県と性別が選択できます。データを公表していない都道府県もあるのでご了承ください。')
 
 dict_data = {
     '新規感染者数': 'newly_confirmed_cases_daily',

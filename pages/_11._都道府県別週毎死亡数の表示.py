@@ -3,6 +3,7 @@ import datetime
 import plotly.express as px
 import streamlit as st
 
+st.set_page_config(layout="wide")
 
 @st.cache(allow_output_mutation=True)
 def load_data():
@@ -20,7 +21,7 @@ def calc_weeks_from_new_year(date):
     return (date - ny).days / 7
 
 
-st.title('構築中')
+st.title('都道府県別週毎死亡数')
 
 df = load_data()
 
@@ -57,12 +58,12 @@ dfD['year'] = dfD['date'].dt.year
 dfD['year'] = dfD['year'].astype(str)
 
 fig = px.scatter(dfA,
-                 x='days_from_NY',
+                 x='weeks_from_ny',
                  y='Observed',
                  color='prefectureJP'
                  )
 fig.update_layout(
-    xaxis_title="年始からの日数",
+    xaxis_title="年始からの週数",
     yaxis_title="死亡数",
 )
 st.plotly_chart(fig, use_container_width=True)
@@ -76,6 +77,6 @@ fig = px.scatter(dfD,
                  )
 fig.update_layout(
     xaxis_title="年始からの週数",
-    yaxis_title="死亡数",
+    yaxis_title="死亡数の相対的変化",
 )
 st.plotly_chart(fig, use_container_width=True)

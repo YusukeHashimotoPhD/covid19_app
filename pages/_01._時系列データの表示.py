@@ -5,8 +5,8 @@ import plotly.graph_objects as go
 
 st.set_page_config(layout="wide")
 
-st.title("時系列データの表示")
-st.write('厚生労働省はさまざまなデータを公開しています。特に、新規感染者数、治療必要者数、重症患者数、そして死亡者数は重要ですが、それぞれ日毎だったり集計値だったりフォーマットが異なります。ここでは、日毎で比較できる新規感染者数と死亡者数、集計値で比較できる治療必要者数と重症者数を比較するプロットを表示します。')
+st.title("新型コロナウィルス感染症　時系列データの表示")
+st.write('日毎で比較できる新規感染者数と死亡者数、集計値で比較できる治療必要者数と重症者数を比較するプロットを表示します。')
 
 dict_data = {
     '新規感染者数': 'newly_confirmed_cases_daily',
@@ -16,10 +16,13 @@ dict_data = {
     '治療必要者数': 'requiring_inpatient_care_etc_daily',
 }
 
-list_prefacture = ['全国', '北海道', '青森県', '岩手県', '宮城県', '秋田県', '山形県', '福島県', '茨城県', '栃木県', '群馬県', '埼玉県', '千葉県', '東京都',
-                   '神奈川県', '新潟県', '富山県', '石川県', '福井県', '山梨県', '長野県', '岐阜県', '静岡県', '愛知県', '三重県', '滋賀県', '京都府', '大阪府',
+list_prefacture = ['全国', '北海道', '青森県', '岩手県', '宮城県', '秋田県', '山形県', '福島県', '茨城県', '栃木県',
+                   '群馬県', '埼玉県', '千葉県', '東京都',
+                   '神奈川県', '新潟県', '富山県', '石川県', '福井県', '山梨県', '長野県', '岐阜県', '静岡県', '愛知県',
+                   '三重県', '滋賀県', '京都府', '大阪府',
                    '兵庫県', '奈良県', '和歌山県', '鳥取県', '島根県', '岡山県', '広島県', '山口県',
-                   '徳島県', '香川県', '愛媛県', '高知県', '福岡県', '佐賀県', '長崎県', '熊本県', '大分県', '宮崎県', '鹿児島県', '沖縄県']
+                   '徳島県', '香川県', '愛媛県', '高知県', '福岡県', '佐賀県', '長崎県', '熊本県', '大分県', '宮崎県',
+                   '鹿児島県', '沖縄県']
 list_data_kind = list(dict_data.keys())
 
 url_1 = 'https://covid19.mhlw.go.jp/public/opendata/'
@@ -104,5 +107,33 @@ fig.update_layout(
     yaxis_title=f'{list_data_kind[2]}と{list_data_kind[4]}',
     xaxis_title="日時",
     #    showlegend=False,
+)
+st.plotly_chart(fig, use_container_width=True)
+
+
+st.subheader('対数プロット')
+st.write('上の2つのグラフは、値が大きく異なる2つのデータを比較しています。下に、対数プロットを表示します。')
+
+fig = px.line(
+    df_a[[list_data_kind[0], list_data_kind[3]]],
+    log_y=True
+)
+fig.update_xaxes(tickformat="%Y年%m月%d日")
+fig.update_layout(
+    title=f'{list_data_kind[0]}と{list_data_kind[3]}（日毎）',
+    yaxis_title=f'{list_data_kind[0]}と{list_data_kind[3]}',
+    xaxis_title="日時",
+)
+st.plotly_chart(fig, use_container_width=True)
+
+fig = px.line(
+    df_a[[list_data_kind[4], list_data_kind[2]]],
+    log_y=True
+)
+fig.update_xaxes(tickformat="%Y年%m月%d日")
+fig.update_layout(
+    title=f'{list_data_kind[4]}と{list_data_kind[2]}（集計）',
+    yaxis_title=f'{list_data_kind[2]}と{list_data_kind[4]}',
+    xaxis_title="日時",
 )
 st.plotly_chart(fig, use_container_width=True)

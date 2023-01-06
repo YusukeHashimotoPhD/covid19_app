@@ -68,24 +68,6 @@ def make_graph(df, selected_datetime, label):
     return fig
 
 
-# col0, col1, col2, col3 = st.columns(4)
-#
-# with col0:
-#     fig = make_graph(df_new_10, selected_datetime, '10万人あたりの新規感染者数')
-#     st.plotly_chart(fig, use_container_width=True)
-#
-# with col1:
-#     fig = make_graph(df_new, selected_datetime, '新規感染者数')
-#     st.plotly_chart(fig, use_container_width=True)
-#
-# with col2:
-#     fig = make_graph(df_severe, selected_datetime, '重症患者数')
-#     st.plotly_chart(fig, use_container_width=True)
-#
-# with col3:
-#     fig = make_graph(df_death, selected_datetime, '死亡者数')
-#     st.plotly_chart(fig, use_container_width=True)
-
 col0, col1 = st.columns(2)
 
 with col0:
@@ -106,7 +88,7 @@ with col1:
     fig = make_graph(df_death, selected_datetime, '死亡者数')
     st.plotly_chart(fig, use_container_width=True)
 
-st.write('データ')
+st.subheader('データソース')
 url = 'https://covid19.mhlw.go.jp/public/opendata/' + dict_data['新規感染者数'] + '.csv'
 st.caption(url)
 

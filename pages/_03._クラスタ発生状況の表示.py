@@ -3,12 +3,6 @@ import streamlit as st
 import plotly.express as px
 
 
-st.set_page_config(layout="wide")
-
-st.title("クラスタの発生状況の表示")
-st.write('人から人へ感染する新型コロナウィルスは、集団感染を起こします。これをクラスタといい、感染拡大を効果的に抑えるために集中的な対処が望まれます。ここでは、厚生労働省が公表するクラスタの発生状況に関するデータを表示します。')
-
-
 @st.cache
 def load_data():
     url = 'https://covid19.mhlw.go.jp/public/opendata/cluster_events_weekly.csv'
@@ -18,34 +12,36 @@ def load_data():
     return df
 
 
+st.set_page_config(layout="wide")
+
+st.title("クラスタの発生状況の表示")
+st.write('厚生労働省が公表するクラスタの発生状況に関するデータを表示します。')
+
 df = load_data()
 
 st.subheader('クラスタ発生場所の時系列変化')
 
 fig = px.line(df.iloc[:, 2:])
 fig.update_layout(
-#    title='クラスタ発生場所の時系列変化',
     xaxis_title="週",
     yaxis_title="クラスタの発生数",
 )
 st.plotly_chart(fig, use_container_width=True)
 
-st.caption('オミクロン株が流行する2022年から、クラスタの発生件数が急増しています。特に高齢者福祉施設におけるクラスタ発生が顕著です。高齢者はリスクが高いことから注意が必要です。')
+#st.caption('オミクロン株が流行する2022年から、クラスタの発生件数が急増しています。特に高齢者福祉施設におけるクラスタ発生が顕著です。高齢者はリスクが高いことから注意が必要です。')
 
 df_a = df.drop('福祉施設', axis=1)
 fig = px.bar(df_a.iloc[:, 2:])
 fig.update_layout(
-#    title='クラスタ発生場所の時系列変化',
     xaxis_title="週",
     yaxis_title="クラスタの発生数",
 )
 st.plotly_chart(fig, use_container_width=True)
 
-st.subheader('クラスタ発生場所時系列変化の2次元プロット')
+#st.subheader('クラスタ発生場所時系列変化の2次元プロット')
 
 fig = px.imshow(df.iloc[:, 2:].T, aspect="auto")
 fig.update_layout(
-#    title='クラスタ発生場所',
     yaxis_title="クラスタの発生場所",
     xaxis_title="週",
 )

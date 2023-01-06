@@ -152,6 +152,7 @@ fig.update_layout(
     xaxis_title="第1主成分",
     yaxis_title="第2主成分",
 )
+fig.update_traces(textposition='top center')
 st.plotly_chart(fig, use_container_width=True)
 
 st.write('データ: ' + url)

@@ -4,8 +4,8 @@ import plotly.express as px
 
 st.set_page_config(layout="wide")
 st.title("流行時期ごとの統計分析")
-st.write('新型コロナウィルスは定期的に変異を繰り返しながら、流行と収束を繰り返しています。その周期は4ヶ月ほどで、各々の流行における重なりが少ないことが特徴です。このため特定期間のデータを抽出することで、それぞれの変異株の特徴を分析できると考えられます。このページは流行時期によって抽出されたデータの統計分析を行います。')
-st.write('左のサイドバーから、分析するデータの都道府県を選択できます。初期設定は日本全国です。')
+st.write('新型コロナウィルスは定期的に変異を繰り返しながら、流行と収束を繰り返しています。その周期は4'
+         'ヶ月ほどで、各々の流行における重なりが少ないことが特徴です。このため特定期間のデータを抽出することで、それぞれの変異株の特徴を分析できると考えられます。このページは流行時期によって抽出されたデータの統計分析を行います。初期設定は日本全国です。左のサイドバーに記した期間を流行時と定義します。また、左のサイドバーから分析するデータの都道府県を選択できます。')
 
 
 #@st.cache
@@ -102,15 +102,7 @@ text_waves = '''
 第8波: 2022年10月14日~\n
 '''
 
-st.subheader('流行期の定義')
-st.write('これまでに新型コロナウィルスは、8回の流行期を経ていると言われています。その定義は曖昧ですがここでは統計データを見ながら、下のグラフに示した期間を流行時と定義します。具体的な定義はサイドバーをご参照ください。')
-
-data_name = st.selectbox(
-    'データの種類',
-    ['新規感染者数', '重症患者数', '死亡者数'],
-    0
-)
-
+list_data_name = ['新規感染者数', '重症患者数', '死亡者数']
 with st.sidebar:
     prefecture = st.selectbox(
         '都道府県',
@@ -120,16 +112,15 @@ with st.sidebar:
 
     st.write(text_waves)
 
-df = load_data(data_name, list_prefacture)
-fig = px.line(df, y=prefecture, color='流行時期')
-fig.update_xaxes(tickformat="%Y年%m月")
-fig.update_layout(
-#    title=data_name,
-    xaxis_title="日付",
-    yaxis_title=data_name,
-#    showlegend=False,
-)
-st.plotly_chart(fig, use_container_width=True)
+for data_name in list_data_name:
+    df = load_data(data_name, list_prefacture)
+    fig = px.line(df, y=prefecture, color='流行時期')
+    fig.update_xaxes(tickformat="%Y年%m月")
+    fig.update_layout(
+        xaxis_title="日付",
+        yaxis_title=data_name,
+    )
+    st.plotly_chart(fig, use_container_width=True)
 
 st.subheader('流行期ごとの時系列データ')
 st.write('新規感染者、重症患者数、死亡者数の流行期ごとの時系列データを表示します。')
@@ -152,7 +143,7 @@ with col2:
     make_linegraph(df, data_name, prefecture)
 
 st.subheader('流行期ごとの統計分析')
-st.write('最初に、上に示した時系列データのバープロットを示します。')
+st.write('最初にbar plotを、次にbox plotを示します。')
 
 col0, col1, col2 = st.columns(3)
 
@@ -171,9 +162,8 @@ with col2:
     df = load_data(data_name, list_prefacture)
     make_bargraph(df, data_name, prefecture)
 
-st.caption('バープロットは、それぞれの流行期での総計値を示します。オミクロン株に変異した第6波以降、死者数が急増していることが見てとれます。')
-
-st.write('次に、ボックスプロットを示します。')
+#st.caption('バープロットは、それぞれの流行期での総計値を示します。オミクロン株に変異した第6波以降、死者数が急増していることが見てとれます。')
+#st.write('次に、ボックスプロットを示します。')
 
 col0, col1, col2 = st.columns(3)
 
@@ -192,4 +182,4 @@ with col2:
     df = load_data(data_name, list_prefacture)
     make_boxgraph(df, data_name, prefecture)
 
-st.caption('ボックスプットは、日毎の感染状況を示します。オミクロン株に変異した第6波以降、新規感染者数が急増し、重症者数は抑えられていますが、死者数は増えていることが見てとれます。')
+#st.caption('ボックスプットは、日毎の感染状況を示します。オミクロン株に変異した第6波以降、新規感染者数が急増し、重症者数は抑えられていますが、死者数は増えていることが見てとれます。')

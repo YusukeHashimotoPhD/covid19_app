@@ -16,7 +16,7 @@ st.set_page_config(layout="wide")
 
 st.title("流行時期ごとのデータ分析")
 st.write('新型コロナウィルスは定期的に変異を繰り返しながら、流行と収束を繰り返しています。その周期は4ヶ月ほどで、各々の流行における重なりが少ないことが特徴です。このため特定期間のデータを抽出することで、それぞれの変異株の特徴を分析できると考えられます。このページは流行時期によって抽出されたデータの分析を行います。')
-st.write('特に、ワクチンの普及によるオミクロン株への変異による感染力の飛躍的増加が、時系列データに与えた影響が顕著です。')
+#st.write('特に、ワクチンの普及によるオミクロン株への変異による感染力の飛躍的増加が、時系列データに与えた影響が顕著です。')
 
 
 dict_data = {
@@ -126,23 +126,31 @@ fig.update_layout(
 
 st.plotly_chart(fig, use_container_width=True)
 
-st.subheader('都道府県別 ' + data_kind + 'の時系列データ2次元プロット')
+#st.subheader('都道府県別 ' + data_kind + 'の時系列データ2次元プロット')
 # 2次元データ
-fig = px.imshow(df_a.T, height=800)
+fig = px.imshow(df_a.T,
+                height=800,
+                width=800,
+                )
 fig.update_xaxes(tickformat="%Y年%m月")
 fig.update_layout(
     #    title=data_kind,
     xaxis_title="日時",
     yaxis_title="都道府県名",
 )
-st.plotly_chart(fig, use_container_width=True)
+st.plotly_chart(fig)
+#st.plotly_chart(fig, use_container_width=True)
 
 st.subheader('都道府県別 ' + data_kind + '時系列データの相関係数')
 
 # 相関係数
 corr = df_a.corr()
-fig = px.imshow(corr, height=800)
-st.plotly_chart(fig, use_container_width=True)
+fig = px.imshow(corr,
+                height=800,
+                width=800,
+                )
+st.plotly_chart(fig)
+#st.plotly_chart(fig, use_container_width=True)
 
 st.subheader('都道府県別 ' + data_kind + '時系列データの主成分分析')
 
@@ -162,4 +170,6 @@ fig.update_layout(
     xaxis_title="第1主成分",
     yaxis_title="第2主成分",
 )
-st.plotly_chart(fig, use_container_width=True)
+fig.update_traces(textposition='top center')
+#st.plotly_chart(fig, use_container_width=True)
+st.plotly_chart(fig)

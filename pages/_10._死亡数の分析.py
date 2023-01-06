@@ -6,7 +6,7 @@ import os
 
 st.set_page_config(layout="wide")
 
-st.title("超過死亡数のデータ分析")
+st.title("死亡数の分析")
 st.write('データの出展：https://dashboard.e-stat.go.jp/timeSeriesResult?indicatorCode=0203020000000010000')
 
 folder_path = './data/'
