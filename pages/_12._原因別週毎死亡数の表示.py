@@ -19,6 +19,7 @@ def calc_weeks_from_new_year(date):
     ny = date.replace(month=1, day=1)
     return int((date - ny).days / 7)
 
+
 def plot_data(df, data_name, label_y):
     dfp = df.pivot(index='weeks_from_ny', columns='year', values=data_name)
     dfp = dfp.drop(2010, axis=1)
@@ -34,6 +35,24 @@ def plot_data(df, data_name, label_y):
         yaxis_title=label_y,
     )
     st.plotly_chart(fig, use_container_width=True)
+
+
+def plot_normalized_data(df, data_name, label_y):
+    dfp = df.pivot(index='weeks_from_ny', columns='year', values=data_name)
+    dfp = dfp.drop(2010, axis=1)
+    dfp = dfp.T
+    dfp = dfp - dfp.mean()
+    dfp = dfp.T
+    fig = px.line(
+        dfp,
+        title=label_y,
+    )
+    fig.update_layout(
+        xaxis_title="年初からの週数",
+        yaxis_title=label_y,
+    )
+    st.plotly_chart(fig, use_container_width=True)
+
 
 st.title('原因別週毎死亡数')
 
@@ -83,3 +102,15 @@ plot_data(dfH, 'Observed_Respiratory', '呼吸器疾患による週毎の死亡�
 plot_data(dfH, 'Observed_Cancer', 'がんによる週毎の死亡数')
 plot_data(dfH, 'Observed_Senility', '老衰による週毎の死亡数')
 plot_data(dfH, 'Observed_Suicide', '自殺による週毎の死亡数')
+
+
+st.title('原因別週毎死亡数の年別変化量')
+st.write('統計学的に正しいのかは微妙ですが、それぞれの週毎の年平均を引き、年毎の変化量を求めました。')
+
+plot_normalized_data(dfH, 'Observed_all', '週毎の死亡数変化量')
+plot_normalized_data(dfH, 'Observed_non-COVID-19', 'covid-19以外による週毎の死亡数変化量')
+plot_normalized_data(dfH, 'Observed_Circulatory', '循環器系による週毎の死亡数変化量')
+plot_normalized_data(dfH, 'Observed_Respiratory', '呼吸器疾患による週毎の死亡数変化量')
+plot_normalized_data(dfH, 'Observed_Cancer', 'がんによる週毎の死亡数変化量')
+plot_normalized_data(dfH, 'Observed_Senility', '老衰による週毎の死亡数変化量')
+plot_normalized_data(dfH, 'Observed_Suicide', '自殺による週毎の死亡数変化量')
