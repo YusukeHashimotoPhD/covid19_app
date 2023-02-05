@@ -1,7 +1,8 @@
+import requests
+import zipfile
 import pandas as pd
 import plotly.express as px
 import streamlit as st
-
 
 # file_path = '/Users/yusukehashimoto/Downloads/Observed/Observed_Cancer.csv'
 # df = pd.read_csv(file_path)
@@ -57,6 +58,18 @@ def plot_normalized_data(df, data_name, label_y):
 st.title('原因別週毎死亡数')
 
 st.write('Data source: https://exdeaths-japan.org/#interpretation')
+
+zip_url = 'https://exdeaths-japan.org/data/Observed.csv.zip'
+zip_file_path = "example.zip"
+extract_to_path = './data/Observed/'
+
+response = requests.get(zip_url)
+with open(zip_file_path, "wb") as f:
+    f.write(response.content)
+
+with zipfile.ZipFile(zip_file_path, "r") as zip_ref:
+    zip_ref.extractall(extract_to_path)
+
 
 folder_path = './data/Observed/'
 list_data = ['Observed_Cancer', 'Observed_Circulatory', 'Observed_non-COVID-19', 'Observed_Respiratory',

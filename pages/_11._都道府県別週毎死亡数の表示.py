@@ -1,3 +1,5 @@
+import requests
+import zipfile
 import pandas as pd
 import datetime
 import plotly.express as px
