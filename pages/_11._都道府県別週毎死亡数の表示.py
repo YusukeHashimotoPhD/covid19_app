@@ -51,7 +51,6 @@ dfA['year'] = dfA['year'].astype(str)
 
 dfB = dfA.pivot(columns='prefectureJP', values='Observed')
 dfC = dfB / dfB.mean()
-dfC['date'] = dfC.index
 dfD = pd.melt(dfC, id_vars='date', var_name='prefectureJP', value_name='Observed')
 
 dfD['days_from_ny'] = dfD['date'].map(lambda x: calc_days_from_new_year(x))
@@ -61,17 +60,16 @@ dfD['year'] = dfD['year'].astype(str)
 
 st.dataframe(dfA)
 
-fig = px.scatter(dfA,
-                 x='weeks_from_ny',
-                 y='Observed',
-                 color='prefectureJP'
-                 )
-
-fig.update_layout(
-    xaxis_title="年始からの週数",
-    yaxis_title="死亡数",
-)
-st.plotly_chart(fig, use_container_width=True)
+# fig = px.scatter(dfD,
+#                  x='weeks_from_ny',
+#                  y='Observed',
+#                  color='prefectureJP'
+#                  )
+# fig.update_layout(
+#     xaxis_title="年始からの週数",
+#     yaxis_title="死亡数",
+# )
+# st.plotly_chart(fig, use_container_width=True)
 
 fig = px.scatter(dfD,
                  x='weeks_from_ny',
