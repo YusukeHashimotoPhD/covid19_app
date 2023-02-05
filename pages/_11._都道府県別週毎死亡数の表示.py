@@ -59,11 +59,14 @@ dfD['weeks_from_ny'] = dfD['date'].map(lambda x: calc_weeks_from_new_year(x))
 dfD['year'] = dfD['date'].dt.year
 dfD['year'] = dfD['year'].astype(str)
 
+st.dataframe(dfA)
+
 fig = px.scatter(dfA,
                  x='weeks_from_ny',
                  y='Observed',
                  color='prefectureJP'
                  )
+
 fig.update_layout(
     xaxis_title="年始からの週数",
     yaxis_title="死亡数",
